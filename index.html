@@ -1,65 +1,58 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Midix Sorteio</title>
-  <style>
-    body { background: #111; color: #fff; font-family: Arial, sans-serif; text-align: center; padding: 40px; }
-    input, button { padding: 10px; margin: 10px; font-size: 16px; border-radius: 5px; border: none; }
-    input { width: 280px; }
-    button { background-color: #0f0; color: #000; cursor: pointer; }
-    #codeBox { display: none; margin-top: 20px; padding: 15px; background: #222; border: 2px solid #0f0; border-radius: 10px; }
-    ol { margin-top: 20px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorteio Midix Gaming</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🎉 Sorteio Midix Gaming</h1>
-  <p id="dynamicText"></p>
-
-  <input type="text" id="name" placeholder="Seu primeiro nome" required><br>
-  <input type="text" id="whatsapp" placeholder="Seu WhatsApp com DDD" required><br>
-  <input type="text" id="location" placeholder="Rua e número do local da máquina" required><br>
-  <button onclick="generateCode()">Gerar Código</button>
-
-  <div id="codeBox">
-    <h2>🎊 Código gerado com sucesso!</h2>
-    <p>Seu código da sorte deste mês é:</p>
-    <h3 id="code"></h3>
-    <p>Boa sorte! Todo mês divulgamos os ganhadores no Instagram <strong>@midixgaming</strong>.</p>
-
-    <h3>Para confirmar sua participação, siga os passos abaixo:</h3>
-    <ol>
-      <li>Tire uma foto sua jogando ou da máquina Midix.</li>
-      <li>Publique nos stories do Instagram e marque <strong>@midixgaming</strong>.</li>
-      <li>Nos envie seu código da sorte via Direct para entrar no sorteio mensal.</li>
-    </ol>
+  <div class="container">
+    <h1>🎉 Sorteio Midix Gaming</h1>
+    <p>Gere o seu código da sorte do mês de <span id="mesAtual"></span> e concorra a <strong>50 fichas</strong> para jogar na máquina onde você escaneou o QR Code.</p>
+    <form id="sorteioForm">
+      <input type="text" id="nome" placeholder="Primeiro Nome" required />
+      <input type="text" id="whatsapp" placeholder="Whatsapp" required />
+      <input type="text" id="endereco" placeholder="Rua e número da máquina" required />
+      <button type="submit">Gerar Código</button>
+    </form>
+    <div id="resultado" class="hidden">
+      <h2>🎊 Código gerado com sucesso!</h2>
+      <p>Seu código da sorte deste mês é:</p>
+      <div id="codigo" class="codigo"></div>
+      <p>Boa sorte! Todo mês divulgamos os ganhadores no Instagram <strong>@midixgaming</strong>.</p>
+      <div class="regras">
+        <h3>Para confirmar sua participação, siga os passos abaixo:</h3>
+        <ol>
+          <li>Tire uma foto sua jogando ou da máquina Midix.</li>
+          <li>Publique nos stories do Instagram e marque <strong>@midixgaming</strong>.</li>
+          <li>Nos envie seu código da sorte via Direct para entrar no sorteio mensal.</li>
+        </ol>
+      </div>
+    </div>
   </div>
-
   <script>
-    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-    const currentMonth = monthNames[new Date().getMonth()];
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("dynamicText").innerHTML = `Gere o seu código da sorte do mês de <strong>${currentMonth}</strong> e concorra a <strong>50 fichas</strong> para jogar na máquina onde você escaneou o QR Code.`;
+    const form = document.getElementById("sorteioForm");
+    const resultado = document.getElementById("resultado");
+    const codigoEl = document.getElementById("codigo");
+    const mesAtual = document.getElementById("mesAtual");
+
+    const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    mesAtual.textContent = meses[new Date().getMonth()];
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const nome = document.getElementById("nome").value.trim();
+      const whats = document.getElementById("whatsapp").value.trim();
+      const endereco = document.getElementById("endereco").value.trim();
+
+      if (nome.length < 4) return alert("Nome deve ter no mínimo 4 letras");
+
+      const codigo = nome.slice(0, 4).toUpperCase() + Math.floor(100 + Math.random() * 900) + nome.slice(-2).toUpperCase();
+      codigoEl.textContent = codigo;
+      resultado.classList.remove("hidden");
     });
-
-    function generateCode() {
-      const name = document.getElementById("name").value.trim();
-      const whatsapp = document.getElementById("whatsapp").value.trim();
-      const location = document.getElementById("location").value.trim();
-
-      if (!name || !whatsapp || !location) {
-        alert("Por favor, preencha todos os campos.");
-        return;
-      }
-
-      const first4 = name.substring(0, 4).toUpperCase().padEnd(4, "X");
-      const last2 = name.slice(-2).toUpperCase().padEnd(2, "X");
-      const randNum = Math.floor(Math.random() * 900 + 100);
-      const code = `${first4}${randNum}${last2}`;
-
-      document.getElementById("code").textContent = code;
-      document.getElementById("codeBox").style.display = "block";
-    }
   </script>
 </body>
 </html>
