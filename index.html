@@ -27,6 +27,7 @@
     <h3 id="code"></h3>
     <p>Boa sorte! Todo mês divulgamos os ganhadores no Instagram <strong>@midixgaming</strong>.</p>
 
+    <h3>Para confirmar sua participação, siga os passos abaixo:</h3>
     <ol>
       <li>Tire uma foto sua jogando ou da máquina Midix.</li>
       <li>Publique nos stories do Instagram e marque <strong>@midixgaming</strong>.</li>
@@ -37,7 +38,9 @@
   <script>
     const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
     const currentMonth = monthNames[new Date().getMonth()];
-    document.getElementById("dynamicText").innerHTML = `Gere o seu código da sorte do mês de <strong>${currentMonth}</strong> e concorra a <strong>50 fichas</strong> para jogar na máquina onde você escaneou o QR Code.`;
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("dynamicText").innerHTML = `Gere o seu código da sorte do mês de <strong>${currentMonth}</strong> e concorra a <strong>50 fichas</strong> para jogar na máquina onde você escaneou o QR Code.`;
+    });
 
     function generateCode() {
       const name = document.getElementById("name").value.trim();
@@ -49,8 +52,8 @@
         return;
       }
 
-      const first4 = name.substring(0, 4).toUpperCase();
-      const last2 = name.substring(name.length - 2).toUpperCase();
+      const first4 = name.substring(0, 4).toUpperCase().padEnd(4, "X");
+      const last2 = name.slice(-2).toUpperCase().padEnd(2, "X");
       const randNum = Math.floor(Math.random() * 900 + 100);
       const code = `${first4}${randNum}${last2}`;
 
